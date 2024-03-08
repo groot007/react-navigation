@@ -352,7 +352,9 @@ export function useNavigationBuilder<
 
   const setState = useLatestCallback(
     (state: NavigationState | PartialState<NavigationState> | undefined) => {
-      if (stateCleanedUp.current) {
+      const isNewState = currentState !== state;
+
+      if (!isNewState && stateCleanedUp.current) {
         // State might have been already cleaned up due to unmount
         // We do not want to expose API allowing to override this
         // This would lead to old data preservation on main navigator unmount
